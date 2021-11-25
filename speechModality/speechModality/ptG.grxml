@@ -1,0 +1,172 @@
+﻿<?xml version="1.0"?>
+<grammar xml:lang="pt-PT" version="1.0" xmlns="http://www.w3.org/2001/06/grammar" tag-format="semantics/1.0">
+	
+	
+	
+	<rule id="rootRule" scope="public">
+		<one-of>
+			<item>
+				<ruleref uri="#start"/>
+				<tag>out.start="START";</tag>
+			</item>
+			<item>
+				<ruleref uri="#call"/>
+				<tag>out.call="CALL";</tag>
+			</item>
+			<item>
+				<ruleref uri="#Check"/>
+				<tag>out.check="CHECK";</tag>
+			</item>
+			<item>
+				<ruleref uri="#Terminar"/>
+				<tag>out.end="END";</tag>
+			</item>
+			<item>
+				<ruleref uri="#Reiniciar"/>
+				<tag>out.restart="RESTART";</tag>
+			</item>
+			<item>
+				<ruleref uri="#Fold"/>
+				<tag>out.fold="FOLD";</tag>
+			</item>
+			<item>
+				<ruleref uri="#Hand"/>
+				<tag>out.hand="HAND";</tag>
+			</item>
+			<item>
+				<ruleref uri="#Força"/>
+				<tag>out.força="QUALITY";</tag>
+			</item>
+			<item>
+				<ruleref uri="#Raise"/>
+				<tag>out.raise="RAISE";</tag>
+			</item>
+		</one-of>
+	</rule>
+	
+	<rule id="start">
+		<example> Quero começar! </example>
+		<example> Iniciar o jogo! </example>
+		<example> Começa o jogo, se faz favor. </example>
+
+		<item repeat="0-1"> Quero </item>
+		<item repeat="0-1"> Podemos </item>
+		<one-of>
+			<item> começar</item>
+			<item> começa</item>
+			<item> inicia</item>
+			<item> iniciar</item>
+			<item> jogar</item>
+		</one-of>
+		<item repeat="0-1"> o jogo </item>
+		<item repeat="0-1"> se faz favor </item>
+		<item repeat="0-1"> por favor </item>
+	</rule>
+	
+	<rule id="call">
+		<example> Pago a aposta. </example>
+		<example> Igualo! </example>
+
+		<one-of>
+			<item>igualo</item>
+			<item>pago</item>
+		</one-of>
+		<item repeat="0-1">a aposta</item>
+	</rule>
+
+	<rule id="Check">
+		<example>passo ao seguinte</example>
+
+		<item>passo</item>
+		<item repeat="0-1">ao seguinte</item>
+	</rule>
+	
+	<rule id="Terminar">
+		<example>quero acabar o jogo</example>
+		<example>quero terminar o jogo</example>
+		<example>podemos acabar o jogo</example>
+		<example>podemos terminar o jogo</example>
+
+		<item repeat="0-1">quero</item>
+		<item repeat="0-1">podemos</item>
+		<one-of>
+			<item>acabar</item>
+			<item>terminar</item>
+		</one-of>
+		<item repeat="0-1">o jogo</item>
+	</rule>
+
+	<rule id="Reiniciar">
+		<example>quero começar de novo</example>
+		<example>quero reiniciar</example>
+
+		<item repeat="0-1">quero</item>
+		<one-of>
+			<item>começar de novo</item>
+			<item>reiniciar</item>
+		</one-of>
+	</rule>
+
+	<rule id="Fold">
+		<example>quero desistir</example>
+		<example>quero sair</example>
+		<example>quero foldar</example>
+		<example>desisto</example>
+
+		<item repeat="0-1">quero</item>
+		<one-of>
+			<item>desistir</item>
+			<item>sair</item>
+			<item>foldar</item>
+			<item>desisto</item>
+		</one-of>
+	</rule>
+<rule id="Hand">
+		<example>ver mão</example>
+		<example>ver cartas</example>
+
+		<item repeat="0-1">quero</item>
+		<item repeat="0-1">mostra-me</item>
+		<item repeat="0-1">mostra</item>
+		<item repeat="0-1">ver</item>
+		<one-of>
+			<item>mão</item>
+			<item>cartas</item>
+		</one-of>
+	</rule>
+
+	<rule id="Força">
+		<example>mostrar a força da mão</example>
+		<example>quero ver a força da mão</example>
+		
+		<item repeat="0-1">podes</item>
+		<item repeat="0-1">quero</item>
+		<item repeat="0-1">mostrar</item>
+		<item repeat="0-1">ver</item>
+		<item repeat="0-1">mostra-me </item>
+		<item repeat="0-1">a</item>
+		
+		<item>força da </item>
+		
+			<one-of>
+			<item>da</item>
+			<item>das</item>
+		</one-of>
+		
+		<item repeat="0-1">mão</item>
+		<item repeat="0-1">cartas</item>
+		<item repeat="0-1">?</item>
+	</rule>
+
+	<rule id="Raise">
+		<example>aumentar a aposta cinco</example>
+		<example>aposto mais cinco</example>
+		<example>quero dar raise cinco</example>
+
+		<one-of>
+			<item>aumentar a aposta</item>
+			<item>aposto mais</item>
+			<item>quero dar raise</item>
+		</one-of>
+	</rule>
+</grammar>
