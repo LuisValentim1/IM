@@ -104,7 +104,7 @@ namespace AppGui
                 case "FOLD":
                     driver.FindElement(By.Id("Fold")).Click();
                     break;
-                case "HAND":
+               /** case "HAND":
                     IWebElement img = driver.FindElement(By.ClassName("card1"));
                     IWebElement img2 = driver.FindElement(By.ClassName("card2"));
                     String src = img.GetAttribute("src").Substring(36, 38);
@@ -118,20 +118,43 @@ namespace AppGui
                     {
                         stylePercentage = stylePercentage.Substring(0, 2);
                     }
-                    break;
+                    break;**/
                 case "RAISE":
-                    driver.FindElement(By.CssSelector(".control-button:nth-child(3)")).Click();
-                    driver.FindElement(By.Id("RaiseAmount")).SendKeys("80");
+                    driver.FindElement(By.Id("RaiseAmount")).Clear();
+                    driver.FindElement(By.Id("RaiseAmount")).SendKeys((string)json.recognized[1].ToString());
                     driver.FindElement(By.Id("Raise")).Click();
                     break;
             }
 
+
+            /*
             //  new 16 april 2020
             mmic.Send(lce.NewContextRequest());
 
-            string json2 = ""; // "{ \"synthesize\": [";
-            json2 += (string)json.recognized[0].ToString()+ " ";
+            string json2 = "{ \"synthesize\": ["; // "{ \"synthesize\": [";
+            //json2 += (string)json.recognized[0].ToString()+ " ";
             json2 += (string)json.recognized[1].ToString() + " DONE." ;
+            //json2 += "] }";
+            /*
+             foreach (var resultSemantic in e.Result.Semantics)
+            {
+                json += "\"" + resultSemantic.Value.Value + "\", ";
+            }
+            json = json.Substring(0, json.Length - 2);
+            json += "] }";
+            
+            var exNot = lce.ExtensionNotification(0 + "", 0 + "", 1, json2);
+            mmic.Send(exNot);
+            */
+        }
+
+        public void sendJson(String content)
+        {
+            mmic.Send(lce.NewContextRequest());
+
+            string json2 = "{ \"synthesize\": ["; // "{ \"synthesize\": [";
+            //json2 += (string)json.recognized[0].ToString()+ " ";
+            json2 += content + " DONE.";
             //json2 += "] }";
             /*
              foreach (var resultSemantic in e.Result.Semantics)

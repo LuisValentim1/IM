@@ -133,3 +133,23 @@ C:\Users\maryj\Desktop\Uni\4ºano\1º semestre\Interação Multimodal\IM\AppGui\
 C:\Users\maryj\Desktop\Uni\4ºano\1º semestre\Interação Multimodal\IM\AppGui\AppGui\obj\Debug\AppGui.csproj.CopyComplete
 C:\Users\maryj\Desktop\Uni\4ºano\1º semestre\Interação Multimodal\IM\AppGui\AppGui\obj\Debug\AppGui.exe
 C:\Users\maryj\Desktop\Uni\4ºano\1º semestre\Interação Multimodal\IM\AppGui\AppGui\obj\Debug\AppGui.pdb
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\AppGui\AppGui\bin\Debug\AppGui.exe.config
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\AppGui\AppGui\bin\Debug\AppGui.exe
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\AppGui\AppGui\bin\Debug\AppGui.pdb
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\AppGui\AppGui\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\AppGui\AppGui\bin\Debug\WebDriver.dll
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\AppGui\AppGui\bin\Debug\mmisharp.pdb
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\AppGui\AppGui\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\AppGui\AppGui\obj\Debug\AppGui.csproj.AssemblyReference.cache
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\AppGui\AppGui\obj\Debug\MainWindow.g.cs
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\AppGui\AppGui\obj\Debug\App.g.cs
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\AppGui\AppGui\obj\Debug\AppGui_MarkupCompile.cache
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\AppGui\AppGui\obj\Debug\AppGui_MarkupCompile.lref
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\AppGui\AppGui\obj\Debug\MainWindow.baml
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\AppGui\AppGui\obj\Debug\AppGui.g.resources
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\AppGui\AppGui\obj\Debug\AppGui.Properties.Resources.resources
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\AppGui\AppGui\obj\Debug\AppGui.csproj.GenerateResource.cache
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\AppGui\AppGui\obj\Debug\AppGui.csproj.CoreCompileInputs.cache
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\AppGui\AppGui\obj\Debug\AppGui.csproj.CopyComplete
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\AppGui\AppGui\obj\Debug\AppGui.exe
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\AppGui\AppGui\obj\Debug\AppGui.pdb

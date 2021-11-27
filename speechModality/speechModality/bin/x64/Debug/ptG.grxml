@@ -38,12 +38,14 @@
 				<tag>out.força="QUALITY";</tag>
 			</item>
 			<item>
-				<ruleref uri="#Raise"/>
-				<tag>out.raise="RAISE";</tag>
-			</item>
-			<item>
-				<ruleref uri="#Apostar"/>
-				<tag>out.apostar="BET";</tag>
+				<item>
+					<ruleref uri="#Raise"/>
+					<tag>out.raise="RAISE";</tag>
+				</item>
+				<item>
+					<ruleref uri="#Numbers"/>
+					<tag>out.numbers=rules.latest();</tag>
+				</item>
 			</item>
 		</one-of>
 	</rule>
@@ -172,21 +174,6 @@
 			<item>aposto mais</item>
 			<item>quero dar raise</item>
 		</one-of>
-	    <ruleref uri="#Numbers"/>
-		<tag> out.Numbers = rules.Numbers; </tag>
-	</rule>
-	
-	<rule id="Apostar">
-		<example>quero apostar cinco</example>
-		<example>aposto cinco</example>
-
-		<item repeat="0-1">quero</item>
-		<one-of>
-			<item>apostar</item>
-			<item>aposto</item>
-		</one-of>
-		<ruleref uri="#Numbers"/>
-		<tag> out.Numbers = rules.Numbers; </tag>
 	</rule>
 	
 	<rule id="Numbers">

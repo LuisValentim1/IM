@@ -56,3 +56,22 @@ C:\Users\maryj\Desktop\Uni\4ºano\1º semestre\Interação Multimodal\IM\speechM
 C:\Users\maryj\Desktop\Uni\4ºano\1º semestre\Interação Multimodal\IM\speechModality\speechModality\obj\x64\Debug\speechModality.csproj.CopyComplete
 C:\Users\maryj\Desktop\Uni\4ºano\1º semestre\Interação Multimodal\IM\speechModality\speechModality\obj\x64\Debug\speechModality.exe
 C:\Users\maryj\Desktop\Uni\4ºano\1º semestre\Interação Multimodal\IM\speechModality\speechModality\obj\x64\Debug\speechModality.pdb
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\speechModality\speechModality\bin\x64\Debug\ptG.grxml
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\speechModality\speechModality\bin\x64\Debug\speechModality.exe.config
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\speechModality\speechModality\bin\x64\Debug\speechModality.exe
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\speechModality\speechModality\bin\x64\Debug\speechModality.pdb
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\speechModality\speechModality\bin\x64\Debug\Microsoft.Speech.dll
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\speechModality\speechModality\obj\x64\Debug\speechModality.csproj.AssemblyReference.cache
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\speechModality\speechModality\obj\x64\Debug\MainWindow.g.cs
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\speechModality\speechModality\obj\x64\Debug\App.g.cs
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\speechModality\speechModality\obj\x64\Debug\speechModality_Content.g.cs
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\speechModality\speechModality\obj\x64\Debug\speechModality_MarkupCompile.cache
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\speechModality\speechModality\obj\x64\Debug\speechModality_MarkupCompile.lref
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\speechModality\speechModality\obj\x64\Debug\MainWindow.baml
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\speechModality\speechModality\obj\x64\Debug\speechModality.g.resources
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\speechModality\speechModality\obj\x64\Debug\speechModality.Properties.Resources.resources
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\speechModality\speechModality\obj\x64\Debug\speechModality.csproj.GenerateResource.cache
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\speechModality\speechModality\obj\x64\Debug\speechModality.csproj.CoreCompileInputs.cache
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\speechModality\speechModality\obj\x64\Debug\speechModality.csproj.CopyComplete
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\speechModality\speechModality\obj\x64\Debug\speechModality.exe
+C:\Users\Luis Valentim\Desktop\1º ano mestrado\IM\Projeto Voz\IM\speechModality\speechModality\obj\x64\Debug\speechModality.pdb
