@@ -30,9 +30,246 @@ namespace AppGui
 
         private IWebDriver driver;
         public IDictionary<string, object> vars { get; private set; }
+
         private IJavaScriptExecutor js;
 
-        public Dictionary<string, string> cards = new Dictionary<string, string>();
+        public Dictionary<string, string> cards = null;
+        Random r = null;
+        string[] repeat = {"Desculpe, não percebi, pode repetir?", "Não o consegui ouvir, pode repetir por favor?", "Poderia repetir se faz favor? Não percebi bem" };
+        string[] turn = { "Ainda não é o seu turno, só um momento.", "Espere um pouco se faz favor, ainda não é o seu turno.", "O seu turno está quase a chegar, só um segundo." };
+       
+        public void SetUp()
+        {
+            driver = new ChromeDriver(@"C:\Program Files\chromedriver\");
+            js = (IJavaScriptExecutor)driver;
+            vars = new Dictionary<string, object>();
+            r = new Random();
+            cards = new Dictionary<string, string>();
+            populateDictionary();
+
+            driver.Navigate().GoToUrl("http://lyncz.co.uk/poker-game/");
+        }
+
+        protected void TearDown()
+        {
+            driver.Quit();
+        }
+
+        public MainWindow()
+        {
+            //InitializeComponent();
+
+            SetUp();
+
+            mmiC = new MmiCommunication("localhost",8000, "User1", "GUI");
+            mmiC.Message += MmiC_Message;
+            mmiC.Start();
+
+            // NEW 16 april 2020
+            //init LifeCycleEvents..
+            lce = new LifeCycleEvents("APP", "TTS", "User1", "na", "command"); // LifeCycleEvents(string source, string target, string id, string medium, string mode
+            // MmiCommunication(string IMhost, int portIM, string UserOD, string thisModalityName)
+            mmic = new MmiCommunication("localhost", 8000, "User1", "GUI");
+        }
+
+        private void MmiC_Message(object sender, MmiEventArgs e)
+        {
+            Console.WriteLine(e.Message);
+            var doc = XDocument.Parse(e.Message);
+            var com = doc.Descendants("command").FirstOrDefault().Value;
+            dynamic json = JsonConvert.DeserializeObject(com);
+            if (float.Parse(json.confidence[0].ToString()) < 0.7)
+            {
+                sendJson(repeat[r.Next(0, 2)]);
+            }
+            else
+            {
+
+                switch ((string)json.recognized[0].ToString())
+                {
+                    case "START":
+                        if (driver.FindElement(By.Id("new-player")).Displayed)
+                        {
+                            driver.FindElement(By.Id("new-player")).Click();
+                        }
+                        break;
+                    case "END":
+                        driver.FindElement(By.Id("endgame")).Click();
+                        break;
+                    case "RESTART":
+                        driver.FindElement(By.Id("endgame")).Click();
+                        driver.FindElement(By.CssSelector(".button-copy")).Click();
+                        driver.FindElement(By.CssSelector(".menu-button")).Click();
+                        sendJson("Com quantos fichas e quantos jogadores gostaria de jogar?");
+
+                        /*driver.FindElement(By.Id("initialChips")).SendKeys("80");
+                        driver.FindElement(By.Id("playerCount")).Click();
+                        driver.FindElement(By.Id("playerCount")).SendKeys("5");
+                        driver.FindElement(By.Id("playnewgame")).Click(); */
+
+                        break;
+                    case "CALL":
+                        if (driver.FindElements(By.CssSelector(".control-button.inactive")).Count == 0)
+                        {
+                            driver.FindElement(By.Id("Call")).Click();
+                            sendJson("Já está.");
+                        }
+                        else
+                        {
+                            sendJson(turn[r.Next(0,2)]);
+                        }
+                        break;
+                    case "CHECK":
+                        if (driver.FindElement(By.Id("Check")).Displayed)
+                        {
+                            driver.FindElement(By.Id("Check")).Click();
+                            sendJson("Ok.");
+                        }
+                        else
+                        {
+                            sendJson("Não pode passar, tem que pagar, subir ou sair.");
+                        }
+                        break;
+                    case "FOLD":
+                        if (driver.FindElements(By.CssSelector(".control-button.inactive")).Count == 0)
+                        {
+                            driver.FindElement(By.Id("Fold")).Click();
+                            sendJson("Ok.");
+                        }
+                        else
+                        {
+                            sendJson(turn[r.Next(0,2)]);
+                        }
+                        break;
+                    case "HAND":
+                        if(driver.FindElement(By.Id("seat2")).GetAttribute("class") != "player folded") { 
+                            var cardImage1 = driver.FindElement(By.CssSelector("#seat2 > .card1 > img"));
+                            String card1 = cardImage1.GetAttribute("src").Substring(36, 2);
+
+                            var cardImage2 = driver.FindElement(By.CssSelector("#seat2 > .card2 > img"));
+                            String card2 = cardImage2.GetAttribute("src").Substring(36, 2);
+
+                            String message = cards[card1] + " e " + cards[card2] + "são as suas cartas esta ronda.";
+                            sendJson(message);
+                        }
+                        else
+                        {
+                            sendJson("Está fora desta jogadas.");
+                        }
+                        break;
+
+                    case "QUALITY":
+
+                        int quality = 0;
+                        string stylePercentage = driver.FindElement(By.Id("background")).GetAttribute("style").Substring(21,3);
+                        if(stylePercentage == "100")
+                        {
+                            sendJson("A sua mão é muito má.");
+                        }
+                        else
+                        {
+                            quality = 100 - Int16.Parse(stylePercentage.Substring(0, 2));
+                            qualityMessage(quality);
+                        }
+                        break;
+
+                    case "RAISE":
+                        if (driver.FindElements(By.CssSelector(".control-button.inactive")).Count == 0)
+                        {
+                            driver.FindElement(By.Id("RaiseAmount")).Clear();
+                            driver.FindElement(By.Id("RaiseAmount")).SendKeys((string)json.recognized[1].ToString());
+                            driver.FindElement(By.Id("Raise")).Click();
+                            sendJson("Feito.");
+                        }
+                        else
+                        {
+                            sendJson(turn[r.Next(0,2)]);
+                        }
+                        break;
+                }
+            }
+
+            /*
+            //  new 16 april 2020
+            mmic.Send(lce.NewContextRequest());
+
+            string json2 = "{ \"synthesize\": ["; // "{ \"synthesize\": [";
+            //json2 += (string)json.recognized[0].ToString()+ " ";
+            json2 += (string)json.recognized[1].ToString() + " DONE." ;
+            //json2 += "] }";
+            /*
+             foreach (var resultSemantic in e.Result.Semantics)
+            {
+                json += "\"" + resultSemantic.Value.Value + "\", ";
+            }
+            json = json.Substring(0, json.Length - 2);
+            json += "] }";
+            
+            var exNot = lce.ExtensionNotification(0 + "", 0 + "", 1, json2);
+            mmic.Send(exNot);
+            */
+        }
+
+        private bool IsElementPresent(By by)
+        {
+            try
+            {
+                driver.FindElement(by);
+                return true;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
+        }
+
+        public void qualityMessage(int quality)
+        {
+            if(quality > 25)
+            {
+                if(quality > 50)
+                {
+                    if(quality > 75)
+                    {
+                        sendJson("A sua mão é muito boa!");
+                    }
+                    else
+                    {
+                        sendJson("Tem uma boa mão.");
+                    }
+                }
+                else
+                {
+                    sendJson("A sua mão não é muito boa mas pode testar a sua sorte.");
+                }
+            }
+            else
+            {
+                sendJson("A sua mão não é lá muito boa, cuidado.");
+            }
+        }
+
+        public void sendJson(String content)
+        {
+            mmic.Send(lce.NewContextRequest());
+
+            string json2 = "";
+            //string json2 = "{ \"synthesize\": ["; // "{ \"synthesize\": [";
+            //json2 += (string)json.recognized[0].ToString()+ " ";
+            json2 += content;
+            //json2 += "] }";
+            /*
+             foreach (var resultSemantic in e.Result.Semantics)
+            {
+                json += "\"" + resultSemantic.Value.Value + "\", ";
+            }
+            json = json.Substring(0, json.Length - 2);
+            json += "] }";
+            */
+            var exNot = lce.ExtensionNotification(0 + "", 0 + "", 1, json2);
+            mmic.Send(exNot);
+        }
+
         public void populateDictionary()
         {
             cards.Add("KS", "rei de espadas");
@@ -87,160 +324,6 @@ namespace AppGui
             cards.Add("3C", "tres de paus");
             cards.Add("2C", "dois de paus");
             cards.Add("AC", "ás de paus");
-        }
-        public void SetUp()
-        {
-            driver = new ChromeDriver(@"C:\Program Files\chromedriver\");
-            js = (IJavaScriptExecutor)driver;
-            vars = new Dictionary<string, object>();
-            populateDictionary();
-
-            driver.Navigate().GoToUrl("http://lyncz.co.uk/poker-game/");
-        }
-
-        protected void TearDown()
-        {
-            driver.Quit();
-        }
-        public MainWindow()
-        {
-            //InitializeComponent();
-
-            SetUp();
-
-            mmiC = new MmiCommunication("localhost",8000, "User1", "GUI");
-            mmiC.Message += MmiC_Message;
-            mmiC.Start();
-
-            // NEW 16 april 2020
-            //init LifeCycleEvents..
-            lce = new LifeCycleEvents("APP", "TTS", "User1", "na", "command"); // LifeCycleEvents(string source, string target, string id, string medium, string mode
-            // MmiCommunication(string IMhost, int portIM, string UserOD, string thisModalityName)
-            mmic = new MmiCommunication("localhost", 8000, "User1", "GUI");
-            
-
-        }
-
-        private void MmiC_Message(object sender, MmiEventArgs e)
-        {
-            Console.WriteLine(e.Message);
-            var doc = XDocument.Parse(e.Message);
-            var com = doc.Descendants("command").FirstOrDefault().Value;
-            dynamic json = JsonConvert.DeserializeObject(com);
-            if (float.Parse(json.confidence[0].ToString()) < 0.7)
-            {
-                sendJson("Desculpe podia repetir?");
-            }
-            else
-            {
-
-                switch ((string)json.recognized[0].ToString())
-                {
-                    case "START":
-                        if (driver.FindElement(By.Id("new-player")).Displayed)
-                        {
-                            driver.FindElement(By.Id("new-player")).Click();
-                            sendJson("aight.");
-                        }
-                        break;
-                    case "END":
-                        driver.FindElement(By.Id("endgame")).Click();
-                        break;
-                    case "RESTART":
-                        driver.FindElement(By.Id("endgame")).Click();
-                        driver.FindElement(By.CssSelector(".button-copy")).Click();
-                        driver.FindElement(By.CssSelector(".menu-button")).Click();
-                        sendJson("Com quantos fichas e quantos jogadores gostaria de jogar?");
-
-                        /*driver.FindElement(By.Id("initialChips")).SendKeys("80");
-                        driver.FindElement(By.Id("playerCount")).Click();
-                        driver.FindElement(By.Id("playerCount")).SendKeys("5");
-                        driver.FindElement(By.Id("playnewgame")).Click(); */
-
-                        break;
-                    case "CALL":
-                        if (driver.FindElement(By.Id("Call")).Displayed)
-                        {
-                            driver.FindElement(By.Id("Call")).Click();
-                        }
-                        break;
-                    case "CHECK":
-                        if (driver.FindElement(By.Id("Check")).Displayed)
-                        {
-                            driver.FindElement(By.Id("Check")).Click();
-                        }
-                        break;
-                    case "FOLD":
-                        driver.FindElement(By.Id("Fold")).Click();
-                        break;
-                    case "HAND":
-                        var cardImage1 = driver.FindElement(By.CssSelector("#seat2 > .card1 > img"));
-                        String card1 = cardImage1.GetAttribute("src").Substring(36, 2);
-
-                        var cardImage2 = driver.FindElement(By.CssSelector("#seat2 > .card2 > img"));
-                        String card2 = cardImage2.GetAttribute("src").Substring(36, 2);
-
-                        String message = cards[card1] + " e " + cards[card2] + "são as suas cartas esta ronda.";
-                        sendJson(message);
-                        break;
-
-                    /** 
-                case "QAULITY":
-                    IWebElement meter = driver.FindElement(By.Id("background"));
-                    String stylePercentage = meter.GetAttribute("style").Substring(22,26);
-                    if(stylePercentage[2] != '0')
-                    {
-                        stylePercentage = stylePercentage.Substring(0, 2);
-                    }
-                    break;**/
-                    case "RAISE":
-                        driver.FindElement(By.Id("RaiseAmount")).Clear();
-                        driver.FindElement(By.Id("RaiseAmount")).SendKeys((string)json.recognized[1].ToString());
-                        driver.FindElement(By.Id("Raise")).Click();
-                        break;
-                }
-            }
-
-            /*
-            //  new 16 april 2020
-            mmic.Send(lce.NewContextRequest());
-
-            string json2 = "{ \"synthesize\": ["; // "{ \"synthesize\": [";
-            //json2 += (string)json.recognized[0].ToString()+ " ";
-            json2 += (string)json.recognized[1].ToString() + " DONE." ;
-            //json2 += "] }";
-            /*
-             foreach (var resultSemantic in e.Result.Semantics)
-            {
-                json += "\"" + resultSemantic.Value.Value + "\", ";
-            }
-            json = json.Substring(0, json.Length - 2);
-            json += "] }";
-            
-            var exNot = lce.ExtensionNotification(0 + "", 0 + "", 1, json2);
-            mmic.Send(exNot);
-            */
-        }
-
-        public void sendJson(String content)
-        {
-            mmic.Send(lce.NewContextRequest());
-
-            string json2 = "";
-            //string json2 = "{ \"synthesize\": ["; // "{ \"synthesize\": [";
-            //json2 += (string)json.recognized[0].ToString()+ " ";
-            json2 += content;
-            //json2 += "] }";
-            /*
-             foreach (var resultSemantic in e.Result.Semantics)
-            {
-                json += "\"" + resultSemantic.Value.Value + "\", ";
-            }
-            json = json.Substring(0, json.Length - 2);
-            json += "] }";
-            */
-            var exNot = lce.ExtensionNotification(0 + "", 0 + "", 1, json2);
-            mmic.Send(exNot);
         }
     }
 }
