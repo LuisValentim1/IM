@@ -227,6 +227,7 @@
 		<example>quero ver as cartas da mesa</example>
 		<example>gostava de ver as cartas da mesa</example>
 
+		<item repeat="0-1">mostra-me</item>
 		<item repeat="0-1">quero</item>
 		<item repeat="0-1">gostava de</item>
 		<item>ver as cartas da mesa</item>

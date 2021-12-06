@@ -140,24 +140,21 @@ namespace speechModality
                 Console.WriteLine("Waiting...");
             }
 
-
             //create audio stream with speech
             player.Stream = new System.IO.MemoryStream();
             tts.SetOutputToWaveStream(player.Stream);
             tts.Rate = rate;
             // tts.SpeakAsync(text);
 
-
             Console.WriteLine("... calling  SpeakSsmlAsync()");
 
-
             // new 10 April 2020  -- try also Stop
+            sre.RecognizeAsyncStop();
             sre.RecognizeAsyncCancel();
 
             tts.SpeakSsmlAsync(text);
 
             Console.WriteLine("done  SpeakSsmlAsync().\n");
-
         }
 
         /*
@@ -165,6 +162,7 @@ namespace speechModality
          */
         void tts_SpeakCompleted(object sender, SpeakCompletedEventArgs e)
         {
+            sre.RecognizeAsyncStop();
             if (player.Stream != null)
             {
                 //play stream
