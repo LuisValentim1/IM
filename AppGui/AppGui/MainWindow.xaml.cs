@@ -63,6 +63,7 @@ namespace AppGui
 
             mmiC = new MmiCommunication("localhost",8000, "User1", "GUI");
             mmiC.Message += MmiC_Message;
+
             mmiC.Start();
 
             // NEW 16 april 2020
@@ -184,11 +185,24 @@ namespace AppGui
                             driver.FindElement(By.Id("RaiseAmount")).Clear();
                             driver.FindElement(By.Id("RaiseAmount")).SendKeys((string)json.recognized[1].ToString());
                             driver.FindElement(By.Id("Raise")).Click();
-                            sendJson("Feito.");
+                            sendJson(afirmative[r.Next(0, 2)]);
                         }
                         else
                         {
                             sendJson(turn[r.Next(0,2)]);
+                        }
+                        break;
+
+                    case "QUANTITY":
+                        if (driver.FindElements(By.CssSelector(".menu-button.open")).Count == 1)
+                        {
+                            driver.FindElement(By.Id("InitialChips")).Clear();
+                            driver.FindElement(By.Id("InitialChips")).SendKeys((string)json.recognized[2].ToString());
+
+                            driver.FindElement(By.Id("playerCount")).Clear();
+                            driver.FindElement(By.Id("playerCount")).SendKeys((string)json.recognized[1].ToString());
+
+                            driver.FindElement(By.Id("playnewgame")).Click();
                         }
                         break;
 
@@ -281,7 +295,7 @@ namespace AppGui
             return mensagem;
         }
 
-            public void qualityMessage(int quality)
+        public void qualityMessage(int quality)
         {
             if(quality > 25)
             {

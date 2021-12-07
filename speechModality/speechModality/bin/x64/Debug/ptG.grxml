@@ -60,6 +60,10 @@
 					<ruleref uri="#Numbers"/>
 					<tag>out.numbers=rules.latest();</tag>
 				</item>
+				<item>
+					<ruleref uri="#Numbers"/>
+					<tag>out.numbers2=rules.latest();</tag>
+				</item>
 			</item>
 		</one-of>
 	</rule>
@@ -201,11 +205,15 @@
 
 		<item repeat="0-1">gostava de</item>
 		<one-of>
+			<item>subir a aposta</item>
+			<item>subir</item>
 			<item>aumentar a aposta</item>
-			<item>apostar mais</item>
-			<item>aposto mais</item>
+			<item>apostar</item>
+			<item>aposto</item>
 			<item>quero dar raise</item>
 		</one-of>
+		<item repeat="0-1">mais</item>
+		
 		<ruleref uri="#Numbers"/>
 		<tag> out.Numbers = rules.Numbers; </tag>
 	</rule>
@@ -243,7 +251,7 @@
 		<tag> out.Numbers = rules.Numbers; </tag>
 		<item>jogadores e </item>
 		<ruleref uri="#Numbers"/>
-		<tag> out.Numbers = rules.Numbers; </tag>
+		<tag> out.Numbers2 = rules.Numbers; </tag>
 		<item>fichas</item>
 	</rule>
 	
