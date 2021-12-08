@@ -52,8 +52,14 @@
 				<tag>out.cartas="CARDS";</tag>
 			</item>
 			<item>
-				<ruleref uri="#Quantidade"/>
-				<tag>out.quantidade="QUANTITY";</tag>
+				<item>
+					<ruleref uri="#Quantidade"/>
+					<tag>out.quantidade="QUANTITY";</tag>
+				</item>
+				<item>
+					<ruleref uri="#Numbers"/>
+					<tag>out.numbers=rules.latest();</tag>
+				</item>
 			</item>
 		</one-of>
 	</rule>
