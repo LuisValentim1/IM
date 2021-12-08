@@ -37,13 +37,13 @@ namespace AppGui
         Random r = null;
         string[] repeat = {"Desculpe, não percebi, pode repetir?", "Não o consegui ouvir, pode repetir por favor?", "Poderia repetir se faz favor? Não percebi bem" };
         string[] turn = { "Ainda não é o seu turno, só um momento.", "Espere um pouco se faz favor, ainda não é o seu turno.", "O seu turno está quase a chegar, só um segundo." };
-       
+        string[] afirmative = {"Já está.", "Ok.", "Feito."};
         public void SetUp()
         {
             driver = new ChromeDriver(@"C:\Program Files\chromedriver\");
             js = (IJavaScriptExecutor)driver;
             vars = new Dictionary<string, object>();
-            r = new Random();
+            r = new Random(DateTime.Now.Day);
             cards = new Dictionary<string, string>();
             populateDictionary();
 
@@ -63,6 +63,7 @@ namespace AppGui
 
             mmiC = new MmiCommunication("localhost",8000, "User1", "GUI");
             mmiC.Message += MmiC_Message;
+
             mmiC.Start();
 
             // NEW 16 april 2020
@@ -112,7 +113,7 @@ namespace AppGui
                         if (driver.FindElements(By.CssSelector(".control-button.inactive")).Count == 0)
                         {
                             driver.FindElement(By.Id("Call")).Click();
-                            sendJson("Já está.");
+                            sendJson(afirmative[r.Next(0, 2)]);
                         }
                         else
                         {
@@ -123,7 +124,7 @@ namespace AppGui
                         if (driver.FindElement(By.Id("Check")).Displayed)
                         {
                             driver.FindElement(By.Id("Check")).Click();
-                            sendJson("Ok.");
+                            sendJson(afirmative[r.Next(0, 2)]);
                         }
                         else
                         {
@@ -134,7 +135,7 @@ namespace AppGui
                         if (driver.FindElements(By.CssSelector(".control-button.inactive")).Count == 0)
                         {
                             driver.FindElement(By.Id("Fold")).Click();
-                            sendJson("Ok.");
+                            sendJson(afirmative[r.Next(0, 2)]);
                         }
                         else
                         {
@@ -142,14 +143,19 @@ namespace AppGui
                         }
                         break;
                     case "HAND":
-                        if(driver.FindElement(By.Id("seat2")).GetAttribute("class") != "player folded") { 
+                        if(driver.FindElement(By.Id("seat2")).GetAttribute("class") != "player folded") {
+                            List<string> hand = new List<string>();
                             var cardImage1 = driver.FindElement(By.CssSelector("#seat2 > .card1 > img"));
                             String card1 = cardImage1.GetAttribute("src").Substring(36, 2);
 
                             var cardImage2 = driver.FindElement(By.CssSelector("#seat2 > .card2 > img"));
                             String card2 = cardImage2.GetAttribute("src").Substring(36, 2);
 
-                            String message = cards[card1] + " e " + cards[card2] + "são as suas cartas esta ronda.";
+                            hand.Add(card1);
+                            hand.Add(card2);
+
+                            String message = "Esta ronda tem na mão, ";
+                            message = cardMessageFormating(hand, message);
                             sendJson(message);
                         }
                         else
@@ -179,48 +185,114 @@ namespace AppGui
                             driver.FindElement(By.Id("RaiseAmount")).Clear();
                             driver.FindElement(By.Id("RaiseAmount")).SendKeys((string)json.recognized[1].ToString());
                             driver.FindElement(By.Id("Raise")).Click();
-                            sendJson("Feito.");
+                            sendJson(afirmative[r.Next(0, 2)]);
                         }
                         else
                         {
                             sendJson(turn[r.Next(0,2)]);
                         }
                         break;
+
+                    case "QUANTITY":
+                        if (driver.FindElements(By.CssSelector(".menu-button.open")).Count == 1)
+                        {
+                            driver.FindElement(By.Id("InitialChips")).Clear();
+                            driver.FindElement(By.Id("InitialChips")).SendKeys((string)json.recognized[2].ToString());
+
+                            driver.FindElement(By.Id("playerCount")).Clear();
+                            driver.FindElement(By.Id("playerCount")).SendKeys((string)json.recognized[1].ToString());
+
+                            driver.FindElement(By.Id("playnewgame")).Click();
+                        }
+                        break;
+
+                    case "CARDS":
+                        string cartasMensagem = "Ainda não existem cartas na mesa.";
+                        List<String> cartasMesa = new List<String>();
+
+                        var flop1 = driver.FindElement(By.CssSelector("#flop1 > img"));
+                        String flopActive = flop1.GetAttribute("style").Substring(12, 6);
+                        if (flopActive == "hidden")
+                        {
+                            sendJson(cartasMensagem);
+                        }
+                        else
+                        {
+                            cartasMensagem = "Atualmente estão na mesa, ";
+                            var flop2 = driver.FindElement(By.CssSelector("#flop2 > img"));
+                            var flop3 = driver.FindElement(By.CssSelector("#flop3 > img"));
+                            String flopCard1 = flop1.GetAttribute("src").Substring(36, 2);
+                            String flopCard2 = flop2.GetAttribute("src").Substring(36, 2);
+                            String flopCard3 = flop3.GetAttribute("src").Substring(36, 2);
+                            cartasMesa.Add(flopCard1);
+                            cartasMesa.Add(flopCard2);
+                            cartasMesa.Add(flopCard3);
+
+                            var turn = driver.FindElement(By.CssSelector("#turn > img"));
+                            String turnActive = turn.GetAttribute("style").Substring(12, 6);
+
+                            if (turnActive != "hidden")
+                            {
+                                String turnCard = turn.GetAttribute("src").Substring(36, 2);
+                                cartasMesa.Add(turnCard);
+
+                                var river = driver.FindElement(By.CssSelector("#river > img"));
+                                String riverActive = river.GetAttribute("style").Substring(12, 6);
+
+                                if (riverActive != "hidden")
+                                {
+                                    String riverCard = river.GetAttribute("src").Substring(36, 2);
+                                    cartasMesa.Add(riverCard);
+                                    cartasMensagem = cardMessageFormating(cartasMesa, cartasMensagem);
+                                    sendJson(cartasMensagem);
+                                }
+                                else
+                                {
+                                    cartasMensagem = cardMessageFormating(cartasMesa, cartasMensagem);
+                                    sendJson(cartasMensagem);
+                                }
+                            }
+                            else
+                            {
+                                cartasMensagem = cardMessageFormating(cartasMesa, cartasMensagem);
+                                sendJson(cartasMensagem);
+                            }
+                        }
+                        break;
                 }
             }
-
-            /*
-            //  new 16 april 2020
-            mmic.Send(lce.NewContextRequest());
-
-            string json2 = "{ \"synthesize\": ["; // "{ \"synthesize\": [";
-            //json2 += (string)json.recognized[0].ToString()+ " ";
-            json2 += (string)json.recognized[1].ToString() + " DONE." ;
-            //json2 += "] }";
-            /*
-             foreach (var resultSemantic in e.Result.Semantics)
-            {
-                json += "\"" + resultSemantic.Value.Value + "\", ";
-            }
-            json = json.Substring(0, json.Length - 2);
-            json += "] }";
-            
-            var exNot = lce.ExtensionNotification(0 + "", 0 + "", 1, json2);
-            mmic.Send(exNot);
-            */
         }
 
-        private bool IsElementPresent(By by)
+        public string cardMessageFormating(List<string> cardsToAdd, string mensagem)
         {
-            try
+            foreach(string card in cardsToAdd)
             {
-                driver.FindElement(by);
-                return true;
+                if (card != cardsToAdd[cardsToAdd.Count - 1])
+                {
+                    if (card.Substring(0, 1) == "Q")
+                    {
+                        mensagem += "uma ";
+                    }
+                    else
+                    {
+                        mensagem += "um ";
+                    }
+                    mensagem += cards[card] + " ,";
+                }
+                else
+                {
+                    if (card.Substring(0, 1) == "Q")
+                    {
+                        mensagem += "e uma ";
+                    }
+                    else
+                    {
+                        mensagem += "e um ";
+                    }
+                    mensagem += cards[card] + " .";
+                }
             }
-            catch (NoSuchElementException)
-            {
-                return false;
-            }
+            return mensagem;
         }
 
         public void qualityMessage(int quality)
@@ -254,18 +326,7 @@ namespace AppGui
             mmic.Send(lce.NewContextRequest());
 
             string json2 = "";
-            //string json2 = "{ \"synthesize\": ["; // "{ \"synthesize\": [";
-            //json2 += (string)json.recognized[0].ToString()+ " ";
             json2 += content;
-            //json2 += "] }";
-            /*
-             foreach (var resultSemantic in e.Result.Semantics)
-            {
-                json += "\"" + resultSemantic.Value.Value + "\", ";
-            }
-            json = json.Substring(0, json.Length - 2);
-            json += "] }";
-            */
             var exNot = lce.ExtensionNotification(0 + "", 0 + "", 1, json2);
             mmic.Send(exNot);
         }
@@ -282,7 +343,7 @@ namespace AppGui
             cards.Add("6S", "seis de espadas");
             cards.Add("5S", "cinco de espadas");
             cards.Add("4S", "quatro de espadas");
-            cards.Add("3S", "tres de espadas");
+            cards.Add("3S", "três de espadas");
             cards.Add("2S", "dois de espadas");
             cards.Add("AS", "ás de espadas");
             cards.Add("KH", "rei de copas");
@@ -295,7 +356,7 @@ namespace AppGui
             cards.Add("6H", "seis de copas");
             cards.Add("5H", "cinco de copas");
             cards.Add("4H", "quatro de copas");
-            cards.Add("3H", "tres de copas");
+            cards.Add("3H", "três de copas");
             cards.Add("2H", "dois de copas");
             cards.Add("AH", "ás de copas");
             cards.Add("KD", "rei de ouros");
@@ -308,7 +369,7 @@ namespace AppGui
             cards.Add("6D", "seis de ouros");
             cards.Add("5D", "cinco de ouros");
             cards.Add("4D", "quatro de ouros");
-            cards.Add("3D", "tres de ouros");
+            cards.Add("3D", "três de ouros");
             cards.Add("2D", "dois de ouros");
             cards.Add("AD", "ás de ouros");
             cards.Add("KC", "rei de paus");
@@ -321,7 +382,7 @@ namespace AppGui
             cards.Add("6C", "seis de paus");
             cards.Add("5C", "cinco de paus");
             cards.Add("4C", "quatro de paus");
-            cards.Add("3C", "tres de paus");
+            cards.Add("3C", "três de paus");
             cards.Add("2C", "dois de paus");
             cards.Add("AC", "ás de paus");
         }
