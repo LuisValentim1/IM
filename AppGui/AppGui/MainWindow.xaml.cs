@@ -94,54 +94,69 @@ namespace AppGui
                             driver.FindElement(By.Id("new-player")).Click();
                         }
                         break;
+
                     case "END":
                         driver.FindElement(By.Id("endgame")).Click();
                         break;
+
                     case "RESTART":
                         driver.FindElement(By.Id("endgame")).Click();
                         driver.FindElement(By.CssSelector(".button-copy")).Click();
                         driver.FindElement(By.CssSelector(".menu-button")).Click();
                         sendJson("Com quantos fichas e quantos jogadores gostaria de jogar?");
-
-                        /*driver.FindElement(By.Id("initialChips")).SendKeys("80");
-                        driver.FindElement(By.Id("playerCount")).Click();
-                        driver.FindElement(By.Id("playerCount")).SendKeys("5");
-                        driver.FindElement(By.Id("playnewgame")).Click(); */
-
                         break;
+
                     case "CALL":
-                        if (driver.FindElements(By.CssSelector(".control-button.inactive")).Count == 0)
+                        if (driver.FindElements(By.CssSelector(".control-button.inactive")).Count == 0 )
                         {
-                            driver.FindElement(By.Id("Call")).Click();
-                            sendJson(afirmative[r.Next(0, 2)]);
+                            if (driver.FindElement(By.Id("Call")).Displayed)
+                            {
+                                driver.FindElement(By.Id("Call")).Click();
+                                sendJson(afirmative[r.Next(0, 2)]);
+                            }
+                            else
+                            {
+                                sendJson("Não pode pagar esta aposta.");
+                            }
                         }
                         else
                         {
                             sendJson(turn[r.Next(0,2)]);
                         }
                         break;
+
                     case "CHECK":
-                        if (driver.FindElement(By.Id("Check")).Displayed)
+                        if (driver.FindElements(By.CssSelector(".control-button.inactive")).Count == 0)
                         {
-                            driver.FindElement(By.Id("Check")).Click();
-                            sendJson(afirmative[r.Next(0, 2)]);
+                            if (driver.FindElement(By.Id("Check")).Displayed)
+                            {
+                                driver.FindElement(By.Id("Check")).Click();
+                                sendJson(afirmative[r.Next(0, 2)]);
+                            }
+                            else
+                            {
+                                sendJson("Não pode passar, tem que pagar, subir ou sair.");
+                            }
+                            sendJson(turn[r.Next(0, 2)]);
                         }
-                        else
-                        {
-                            sendJson("Não pode passar, tem que pagar, subir ou sair.");
-                        }
+                        
                         break;
+
                     case "FOLD":
                         if (driver.FindElements(By.CssSelector(".control-button.inactive")).Count == 0)
                         {
-                            driver.FindElement(By.Id("Fold")).Click();
-                            sendJson(afirmative[r.Next(0, 2)]);
+                            if (driver.FindElement(By.Id("Fold")).Displayed)
+                            {
+                                driver.FindElement(By.Id("Fold")).Click();
+                                sendJson(afirmative[r.Next(0, 2)]);
+                            }
                         }
                         else
                         {
                             sendJson(turn[r.Next(0,2)]);
                         }
                         break;
+
                     case "HAND":
                         if(driver.FindElement(By.Id("seat2")).GetAttribute("class") != "player folded") {
                             List<string> hand = new List<string>();
@@ -180,12 +195,18 @@ namespace AppGui
                         break;
 
                     case "RAISE":
-                        if (driver.FindElements(By.CssSelector(".control-button.inactive")).Count == 0)
+                        if (driver.FindElements(By.CssSelector(".control-button.inactive")).Count == 0 )
                         {
-                            driver.FindElement(By.Id("RaiseAmount")).Clear();
-                            driver.FindElement(By.Id("RaiseAmount")).SendKeys((string)json.recognized[1].ToString());
-                            driver.FindElement(By.Id("Raise")).Click();
-                            sendJson(afirmative[r.Next(0, 2)]);
+                            if (driver.FindElement(By.Id("Raise")).Displayed) { 
+                                driver.FindElement(By.Id("RaiseAmount")).Clear();
+                                driver.FindElement(By.Id("RaiseAmount")).SendKeys((string)json.recognized[1].ToString());
+                                driver.FindElement(By.Id("Raise")).Click();
+                                sendJson(afirmative[r.Next(0, 2)]);
+                            }
+                            else
+                            {
+                                sendJson("Não pode subir esta aposta.");
+                            }
                         }
                         else
                         {
