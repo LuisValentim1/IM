@@ -52,8 +52,24 @@
 				<tag>out.cartas="CARDS";</tag>
 			</item>
 			<item>
-				<ruleref uri="#Quantidade"/>
-				<tag>out.quantidade="QUANTITY";</tag>
+				<item>
+					<ruleref uri="#Quantidade"/>
+					<tag>out.quantidade="QUANTITY";</tag>
+				</item>
+				<item>
+					<ruleref uri="#Numbers"/>
+					<tag>out.numbers=rules.latest();</tag>
+				</item>
+				<item>
+					<ruleref uri="#Quantidade2"/>
+				</item>
+				<item>
+					<ruleref uri="#Numbers"/>
+					<tag>out.numbers2=rules.latest();</tag>
+				</item>
+							<item>
+					<ruleref uri="#Quantidade3"/>
+				</item>
 			</item>
 		</one-of>
 	</rule>
@@ -168,7 +184,10 @@
 	<rule id="Força">
 		<example>mostrar a força da mão</example>
 		<example>quero ver a força da mão</example>
+		<example>que tal está a minha mão?</example>
+		<example>a minha mão é boa?</example>
 		
+		<item repeat="0-1">que tal está</item>
 		<item repeat="0-1">gostava de</item>
 		<item repeat="0-1">podes</item>
 		<item repeat="0-1">quero</item>
@@ -177,15 +196,19 @@
 		<item repeat="0-1">mostra-me </item>
 		<item repeat="0-1">a</item>
 		
-		<item>força </item>
-			<one-of>
+		
+		<item repeat="0-1">força </item>
+		<one-of>
 			<item>da</item>
 			<item>das</item>
 		</one-of>
 		
-		<item repeat="0-1">mão</item>
+		<item repeat="0-1">minha</item>
+		<item>mão</item>
 		<item repeat="0-1">cartas</item>
+		<item repeat="0-1">é boa</item>
 		<item repeat="0-1">?</item>
+		
 	</rule>
 
 	<rule id="Raise">
@@ -193,6 +216,7 @@
 		<example>aposto mais cinco</example>
 		<example>quero dar raise cinco</example>
 
+		<item repeat="0-1">quero</item>
 		<item repeat="0-1">gostava de</item>
 		<one-of>
 			<item>aumentar a aposta</item>
@@ -200,8 +224,6 @@
 			<item>aposto mais</item>
 			<item>quero dar raise</item>
 		</one-of>
-		<ruleref uri="#Numbers"/>
-		<tag> out.Numbers = rules.Numbers; </tag>
 	</rule>
 
 	<rule id="Apostar">
@@ -231,13 +253,20 @@
 		<example>gostava de ter cinco jogadores e cinco fichas</example>
 
 		<item repeat="0-1">quero</item>
-		<item repeat="0-1">gostava de ter</item>
-		<ruleref uri="#Numbers"/>
-		<tag> out.Numbers = rules.Numbers; </tag>
+		<item repeat="0-1">gostava de </item>
+		<item repeat="0-1">começar</item>
+		<one-of>
+			<item>com</item>
+			<item>ter</item>
+		</one-of>	
+	</rule>
+	
+	<rule id="Quantidade2">
 		<item>jogadores e </item>
-		<ruleref uri="#Numbers"/>
-		<tag> out.Numbers = rules.Numbers; </tag>
-		<item>fichas</item>
+	</rule>
+	
+	<rule id="Quantidade3">
+		<item>fichas.</item>
 	</rule>
 	
 	<rule id="Numbers">

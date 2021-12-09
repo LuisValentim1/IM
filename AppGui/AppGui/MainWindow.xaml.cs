@@ -79,7 +79,7 @@ namespace AppGui
             var doc = XDocument.Parse(e.Message);
             var com = doc.Descendants("command").FirstOrDefault().Value;
             dynamic json = JsonConvert.DeserializeObject(com);
-            if (float.Parse(json.confidence[0].ToString()) < 0.7)
+            if (float.Parse(json.confidence[0].ToString()) < 0.55)
             {
                 sendJson(repeat[r.Next(0, 2)]);
             }
