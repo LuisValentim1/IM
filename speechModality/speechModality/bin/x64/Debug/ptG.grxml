@@ -166,19 +166,27 @@
 	</rule>
 	
 	<rule id="Hand">
-		<example>ver mão</example>
-		<example>ver cartas</example>
+		<example>quero ver a minha mão.</example>
+		<example>ver as minhas cartas.</example>
+		<example>mostra-me as cartas que tenho na mão.</example>
 
 		<item repeat="0-1">gostava de</item>
 		<item repeat="0-1">quero</item>
 		<item repeat="0-1">mostra-me</item>
 		<item repeat="0-1">mostra</item>
 		<item repeat="0-1">ver</item>
+		<item repeat="0-1">a</item>
+		<item repeat="0-1">as</item>
+		<item repeat="0-1">minha</item>
+		<item repeat="0-1">minhas</item>
 		
 		<one-of>
 			<item>mão</item>
 			<item>cartas</item>
 		</one-of>
+	
+		<item repeat="0-1">que tenho</item>
+		<item repeat="0-1">na mão.</item>
 	</rule>
 
 	<rule id="Força">
@@ -219,6 +227,8 @@
 		<item repeat="0-1">quero</item>
 		<item repeat="0-1">gostava de</item>
 		<one-of>
+			<item>subir mais</item>
+			<item>subir a aposta</item>
 			<item>aumentar a aposta</item>
 			<item>apostar mais</item>
 			<item>aposto mais</item>
