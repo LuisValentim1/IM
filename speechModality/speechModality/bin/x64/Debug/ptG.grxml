@@ -219,6 +219,8 @@
 		<item repeat="0-1">quero</item>
 		<item repeat="0-1">gostava de</item>
 		<one-of>
+			<item>subir mais</item>
+			<item>subir a aposta</item>
 			<item>aumentar a aposta</item>
 			<item>apostar mais</item>
 			<item>aposto mais</item>
