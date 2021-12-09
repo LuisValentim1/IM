@@ -80,6 +80,8 @@
 		<example> Começa o jogo, se faz favor. </example>
 		<example> Gostava de começar o jogo</example>
 
+		<item repeat="0-1">Desejo</item>
+		<item repeat="0-1">Pretendo</item>
 		<item repeat="0-1"> Quero </item>
 		<item repeat="0-1"> Podemos </item>
 		<item repeat="0-1"> Gostava de</item>
@@ -123,6 +125,8 @@
 		<example>gostava de acabar o jogo</example>
 		<example>gostava de terminar o jogo</example>
 
+		<item repeat="0-1">desejo</item>
+		<item repeat="0-1">pretendo</item>
 		<item repeat="0-1">quero</item>
 		<item repeat="0-1">podemos</item>
 		<item repeat="0-1">gostava de</item>
@@ -139,6 +143,8 @@
 		<example>gostava de reiniciar</example>
 		<example>gostava de começar de novo</example>
 		
+		<item repeat="0-1">desejo</item>
+		<item repeat="0-1">pretendo</item>
 		<item repeat="0-1">quero</item>
 		<item repeat="0-1">gostava de</item>
 		<one-of>
@@ -155,6 +161,8 @@
 		<example>gostava de desistir</example>
 		<example>gostava de sair</example>
 		
+		<item repeat="0-1">desejo</item>
+		<item repeat="0-1">pretendo</item>
 		<item repeat="0-1">quero</item>
 		<item repeat="0-1">gostava de</item>
 		<one-of>
@@ -224,6 +232,8 @@
 		<example>aposto mais cinco</example>
 		<example>quero dar raise cinco</example>
 
+		<item repeat="0-1">desejo</item>
+		<item repeat="0-1">pretendo</item>
 		<item repeat="0-1">quero</item>
 		<item repeat="0-1">gostava de</item>
 		<one-of>
@@ -253,6 +263,8 @@
 		<example>quero ver as cartas da mesa</example>
 		<example>gostava de ver as cartas da mesa</example>
 
+		<item repeat="0-1">desejo</item>
+		<item repeat="0-1">pretendo</item>
 		<item repeat="0-1">quero</item>
 		<item repeat="0-1">gostava de</item>
 		<item>ver as cartas da mesa</item>
@@ -262,9 +274,13 @@
 		<example>quero cinco jogadores e cinco fichas</example>
 		<example>gostava de ter cinco jogadores e cinco fichas</example>
 
+		<item repeat="0-1">apetece-me</item>
+		<item repeat="0-1">pretendo</item>
+		<item repeat="0-1">desejo</item>
 		<item repeat="0-1">quero</item>
 		<item repeat="0-1">gostava de </item>
 		<item repeat="0-1">começar</item>
+		<item repeat="0-1">iniciar</item>
 		<one-of>
 			<item>com</item>
 			<item>ter</item>
